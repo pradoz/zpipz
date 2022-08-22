@@ -1,14 +1,5 @@
-import json
-import os
 from dataclasses import dataclass
 from pathlib import Path
-# from typing import Any, Optional, Sequence, Union
-#
-# from aws_cdk import App as _App
-# from aws_cdk import aws_s3 as s3
-# from aws_cdk import aws_s3_deployment as s3_deploy
-# from aws_cdk.region_info import RegionInfo
-# from checksumdir import dirhash
 from pkg_resources import get_distribution
 from zpipz.errors import _CDKVersionError
 
@@ -39,7 +30,7 @@ def check_cdk_version(pkg: str = "aws-cdk-lib", cfg: str = "pyproject.toml"):
     """
     installed_cdk_version = get_distribution(pkg).version
     desired_version = ""
-    with open(f"/{cfg}", "r") as setup_file:
+    with open(Path(f"./{cfg}"), "r") as setup_file:
         lines = setup_file.readlines()
         for line in lines:
             if line.startswith(pkg):
