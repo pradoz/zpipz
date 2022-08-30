@@ -46,7 +46,7 @@ jobs:
         flake8 'src' --count --max-line-length=127 --show-source --statistics
     - name: Test with pytest
       run: |
-        pytest --rootdir='$HOME/runner/zpipz'
+        pytest --rootdir='$HOME/work/zpipz'
     # - name: Upload code coverage
     #   uses: codecov/codecov-action@v1
 
