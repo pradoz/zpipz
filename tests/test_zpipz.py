@@ -67,10 +67,10 @@ def test_default_bucket_blocks_all_public_access(s3_stack_template: Template) ->
         type="AWS::S3::Bucket",
         props={
             "PublicAccessBlockConfiguration": Match.object_equals({
-                    "BlockPublicAcls": True,
-                    "BlockPublicPolicy": True,
-                    "IgnorePublicAcls": True,
-                    "RestrictPublicBuckets": True
+                "BlockPublicAcls": True,
+                "BlockPublicPolicy": True,
+                "IgnorePublicAcls": True,
+                "RestrictPublicBuckets": True
             })
         },
     )
