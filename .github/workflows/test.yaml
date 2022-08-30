@@ -24,9 +24,9 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install poetry
         python -m pip install flake8 pytest
         python -m pip install aws-cdk-lib # TODO: fix this
+        python -m pip install poetry
     - name: Initialize cache
       uses: actions/cache@v2.1.6
       id: cache
@@ -34,11 +34,9 @@ jobs:
         path: .venv
         key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
     - name: Validate cache
-      run: python -m poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
       if: steps.cache.outputs.cache-hit != 'true'
+      run: python -m poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
     - name: Configure poetry
-      env:
-        POETRY_VIRTUALENVS_CREATE: false
       run: |
         # python -m poetry config virtualenvs.in-project true
         python -m poetry install
@@ -47,7 +45,7 @@ jobs:
         flake8 'src' --count --max-line-length=127 --show-source --statistics
     - name: Test with pytest
       run: |
-        pytest
+        pytest --rootdir='$HOME/zpipz'
     # - name: Upload code coverage
     #   uses: codecov/codecov-action@v1
 

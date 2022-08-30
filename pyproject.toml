@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "zpipz"
 version = "0.0.0"
-description = "AWS CDK L3 Constructs"
+description = "AWS CDK Constructs with Secure Defaults"
 authors = ["zpprado"]
 license = "MIT"
 readme = "README.md"
