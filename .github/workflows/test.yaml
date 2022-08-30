@@ -26,6 +26,7 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install poetry
         python -m pip install flake8 pytest
+        python -m pip install aws-cdk-lib # TODO: fix this
     - name: Initialize cache
       uses: actions/cache@v2.1.6
       id: cache
