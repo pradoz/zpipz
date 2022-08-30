@@ -47,4 +47,3 @@ def check_cdk_version(pkg: str = "aws-cdk-lib", cfg: str = "pyproject.toml"):
     print(f"desired_version: {desired_version}")
     if installed_cdk_version != desired_version:
         raise _CDKVersionError(installed_cdk_version, desired_version)
-

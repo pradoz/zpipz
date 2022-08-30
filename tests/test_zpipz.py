@@ -3,9 +3,15 @@ from aws_cdk import (
     Environment,
     Stack,
 )
+from aws_cdk.assertions import (
+    Match,
+    Matcher,
+    Template,
+)
 from constructs import Construct
+import pytest
 
-import os
+from utils import get_template
 
 test_app = App()
 environment = Environment(
@@ -14,40 +20,68 @@ environment = Environment(
     # region=os.environ["CDK_DEFAULT_REGION"],
     # account=os.environ["CDK_DEFAULT_ACCOUNT"],
 )
-namespace = "test-stack"
+namespace = "test"
 
-class DefaultS3Stack(Stack):
+
+class DefaultStack(Stack):
     def __init__(
         self, scope: Construct, construct_id: str, namespace: str, **kwargs
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
-        DefaultBucket(self, f"{namespace}-default-s3-bucket")
+        self.dft_bucket = DefaultBucket(self, f"{namespace}-default-s3-bucket")
 
 
 from zpipz.s3_bucket import DefaultBucket
 
-s3_stack = DefaultS3Stack(
+s3_stack = DefaultStack(
     test_app,
-    f"{namespace}-default-s3-stack",
+    f"{namespace}-default-stack",
     namespace=namespace,
     env=environment,
 )
 
-
-test_app.synth()
-
-
-def test_default_bucket_is_encrypted(stack):
-    assert stack.encryption
+@pytest.fixture
+def s3_stack_template() -> Template:
+    t = get_template(s3_stack)
+    return t
 
 
-test_default_bucket_is_encrypted(s3_stack)
-            # encryption=s3.BucketEncryption.S3_MANAGED,  # S3 Managed encryption
-            # server_access_logs_bucket=logging_bucket,
-            # server_access_logs_prefix=logging_prefix,
-            # block_public_access=s3.BlockPublicAccess.BLOCK_ALL,  # Public Access: BLOCK ALL # noqa: E501
-            # removal_policy=removal_policy,
-            # auto_delete_objects=auto_delete_objects,
-            # versioned=True,
-            # enforce_ssl=True,
-            # **kwargs,
+def test_default_bucket_uses_server_side_encryption(s3_stack_template: Template) -> None:
+    s3_stack_template.has_resource_properties(
+        type="AWS::S3::Bucket",
+        props={
+            "BucketEncryption": Match.object_equals({
+                "ServerSideEncryptionConfiguration": Match.array_equals([
+                    Match.object_equals({
+                        "ServerSideEncryptionByDefault": Match.object_equals({
+                            "SSEAlgorithm": Match.any_value(),
+                        })
+                    })
+                ]),
+            })
+        },
+    )
+
+def test_default_bucket_blocks_all_public_access(s3_stack_template: Template) -> None:
+    s3_stack_template.has_resource_properties(
+        type="AWS::S3::Bucket",
+        props={
+            "PublicAccessBlockConfiguration": Match.object_equals({
+                    "BlockPublicAcls": True,
+                    "BlockPublicPolicy": True,
+                    "IgnorePublicAcls": True,
+                    "RestrictPublicBuckets": True
+            })
+        },
+    )
+
+def test_default_bucket_has_versioning_enabled(s3_stack_template: Template) -> None:
+    s3_stack_template.has_resource_properties(
+        type="AWS::S3::Bucket",
+        props={
+            "VersioningConfiguration": Match.object_equals({
+                "Status": "Enabled"
+            })
+        }
+    )
+

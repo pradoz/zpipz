@@ -120,7 +120,7 @@ python-versions = "*"
 
 [[package]]
 name = "jsii"
-version = "1.65.1"
+version = "1.66.0"
 description = "Python client for jsii runtime"
 category = "main"
 optional = false
@@ -377,8 +377,8 @@ iniconfig = [
     {file = "iniconfig-1.1.1.tar.gz", hash = "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"},
 ]
 jsii = [
-    {file = "jsii-1.65.1-py3-none-any.whl", hash = "sha256:97a3993006a9f6a63f82c54a6936cf8727d3ebaba354fa80d3aaf7c329d880f9"},
-    {file = "jsii-1.65.1.tar.gz", hash = "sha256:6041121700207121ff96c93e1524a7a339cdbcd90a7d42c41957903101934828"},
+    {file = "jsii-1.66.0-py3-none-any.whl", hash = "sha256:3c776c3fc32ed1e28fc95625617f106ca28e9e87b0b47d4d0bb66b78b873cafe"},
+    {file = "jsii-1.66.0.tar.gz", hash = "sha256:11c64c7c799776fe05922032970c36ac81c726dbdc18039dd3d2e848458d105c"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},

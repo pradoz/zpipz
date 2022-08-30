@@ -41,8 +41,8 @@ class DefaultBucket(s3.Bucket):
         id: str,
         encryption=s3.BucketEncryption.S3_MANAGED,
         block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
-        auto_delete_objects: bool = True,
-        removal_policy: RemovalPolicy = RemovalPolicy.DESTROY,
+        auto_delete_objects: bool = False,
+        removal_policy: RemovalPolicy = RemovalPolicy.RETAIN,
         logging_prefix: Optional[str] = None,
         logging_bucket: Optional[s3.IBucket] = None,
         **kwargs,
@@ -61,11 +61,11 @@ class DefaultBucket(s3.Bucket):
             **kwargs,
         )
 
-        self.encryption=encryption
-        self.server_access_logs_bucket=logging_bucket
-        self.server_access_logs_prefix=logging_prefix
-        self.block_public_access=block_public_access
-        self.removal_policy=removal_policy
-        self.auto_delete_objects=auto_delete_objects
-        self.versioned=True
-        self.enforce_ssl=True
+        self.encryption = encryption
+        self.server_access_logs_bucket = logging_bucket
+        self.server_access_logs_prefix = logging_prefix
+        self.block_public_access = block_public_access
+        self.removal_policy = removal_policy
+        self.auto_delete_objects = auto_delete_objects
+        self.versioned = True
+        self.enforce_ssl = True

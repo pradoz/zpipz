@@ -29,20 +29,15 @@ jobs:
     - name: Configure poetry
       run: |
         python -m poetry config virtualenvs.in-project true
-        # - name: Set up cache
-        #   uses: actions/cache@v1
-        #   id: cache
-        #   with:
-        #     path: .venv
-        #     key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
-        # - name: Ensure cache is healthy
-        #   if: steps.cache.outputs.cache-hit == 'true'
-        #     run: python -m poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
     - name: Install Python requirements
       run: |
         python -m poetry install
-      # - name: Test
-      #   run: python -m poetry run bash scripts/test.sh
-      # - name: Upload code coverage
-      #   uses: codecov/codecov-action@v1
+    - name: Lint with flake8
+      run: |
+        flake8 'src' --count --max-line-length=127 --show-source --statistics
+    - name: Test with pytest
+      run: |
+        pytest
+    # - name: Upload code coverage
+    #   uses: codecov/codecov-action@v1
 
